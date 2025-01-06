@@ -1,0 +1,21 @@
+.container {
+  border: 2px solid black;
+  padding: 8px;
+}
+
+.img {
+  width: 180px;
+  height: 180px;
+}
+
+.isActive {
+  border-color: green;
+}
+
+.isRetired {
+  border-color: orangered;
+}
+
+.text {
+  color: #2a2a2a;
+}
