@@ -1,65 +1,40 @@
-import { useState } from "react";
-import ClicksTracker from "../ClicksTracker/ClicksTracker";
-import Toggler from "../Toggler/Toggler";
+import { useState, useEffect } from "react";
+import ClickTracker from "../ClickTracker";
+import Sidebar from "../Sidebar/Sidebar";
 import Reader from "../Reader/Reader";
 import articles from "../../articles.json";
+import getRandomHexColor from "../../utils/getRandomHexColor";
 import css from "./App.module.css";
 
 export default function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const openSidebar = () => setIsSidebarOpen(true);
+
+  const closeSidebar = () => setIsSidebarOpen(false);
+
   const [clicks, setClicks] = useState(0);
-  const [values, setValues] = useState({
-    a: 1,
-    b: 2,
-    c: 3,
-  });
+  // const color = clicks % 5 === 0 ? "orangered" : "skyblue";
+  const color = getRandomHexColor();
 
-  const updateValues = () => {
-    setValues({
-      ...values,
-      b: 5,
-    });
-  };
-
-  const udpateClicks = () => {
-    setClicks(clicks + 1);
-  };
-
-  const resetClicks = () => {
-    setClicks(0);
-  };
+  useEffect(() => {
+    if (clicks === 0) {
+      return;
+    }
+    document.body.style.backgroundColor = color;
+  }, [color]);
 
   return (
     <div className={css.container}>
-      <h1>State in React</h1>
-      <hr />
+      <h1>Effects in React</h1>
+      <button onClick={() => setClicks(clicks + 1)}>Clicks {clicks}</button>
+
+      <ClickTracker />
+
+      <button onClick={openSidebar}>Open sidebar</button>
+      {isSidebarOpen && <Sidebar onClose={closeSidebar} />}
+
       <Reader items={articles} />
-      <hr />
-      <button onClick={updateValues}>
-        Update values {values.a + values.b + values.c}
-      </button>
-      <hr />
-      <Toggler>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid
-          ratione architecto voluptas illum eaque quae natus quidem illo
-          perferendis, quia tempore deserunt animi vero? Assumenda ipsam
-          cupiditate odit illo soluta?
-        </p>
-      </Toggler>
-
-      <Toggler>
-        <h2>Omagad</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit illo
-          vitae officiis perferendis quod nisi amet architecto nam, non magnam.
-        </p>
-      </Toggler>
-
-      <hr />
-      <ClicksTracker value={clicks} onUpdate={udpateClicks} />
-      <ClicksTracker value={clicks} onUpdate={udpateClicks} />
-      <button onClick={resetClicks}>Reset clicks</button>
-      <hr />
     </div>
   );
 }
